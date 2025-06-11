@@ -1,0 +1,7 @@
+enclave {
+    from "openenclave/edl/sgx/sgx.edl" import *;
+
+    trusted {
+        public int word_count([in, string] const char* input);
+    };
+};
