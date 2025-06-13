@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Runtime.InteropServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,10 +26,13 @@ app.Run();
 
 public static class EnclaveInterop
 {
-    // Platzhalter für die echte Enklaven-Interop
+    // Import the C++ function using DllImport
+    [DllImport("EnclaveLibrary.dll", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int CountWordsInEnclave(string input);
+
     public static int CountWords(string input)
     {
-        // TODO: Hier C++-Interop aufrufen
-        return input.Split(new[] { ' ', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries).Length;
+        // Call the C++ function via interop
+        return CountWordsInEnclave(input);
     }
 }
